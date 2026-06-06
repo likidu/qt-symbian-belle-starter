@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/qml">
+        <file>AppWindow.qml</file>
+        <file>SelfTestPage.qml</file>
+        <file>MemoryBar.qml</file>
+        <file>BellePageStackWindow.qml</file>
+        <file>gfx/icon-link.svg</file>
+        <file>gfx/icon-x.svg</file>
+        <file>sfx/test-tone.wav</file>
+    </qresource>
+</RCC>
