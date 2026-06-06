@@ -1,7 +1,7 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 
-BellePageStackWindow {
+BelleAppPageStackWindow {
     id: window
     showStatusBar: true
     showToolBar: true

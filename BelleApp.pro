@@ -60,4 +60,4 @@ OTHER_FILES += \
     qml/AppWindow.qml \
     qml/SelfTestPage.qml \
     qml/MemoryBar.qml \
-    qml/BellePageStackWindow.qml
+    qml/BelleAppPageStackWindow.qml

@@ -43,6 +43,7 @@ foreach ($f in $textFiles) {
     $c = $c.Replace('e1000001', $uidNoPrefix)   # private-dir folder name
     $c = $c.Replace('0xE1000001', $Uid)         # pkg/pro UID literal
     $c = $c.Replace('0xe1000001', $Uid)
+    $c = $c.Replace('BELLEAPP', $AppName.ToUpperInvariant())  # macro: BELLEAPP_DEBUG
     $c = $c.Replace('BelleApp', $AppName)       # PascalCase identifiers, filenames, TARGET
     $c = $c.Replace('belleapp', $nameLower)     # db file, connection name, home fallback, cert/pass
     if ($c -ne $orig) {
