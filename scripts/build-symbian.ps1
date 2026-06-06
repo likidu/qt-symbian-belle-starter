@@ -70,7 +70,7 @@ try
 {
     $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
     $repoRoot = (Resolve-Path (Join-Path $scriptDir '..')).Path
-    $proFile = Join-Path $repoRoot 'Podin.pro'
+    $proFile = Join-Path $repoRoot 'BelleApp.pro'
     if (-not (Test-Path -LiteralPath $proFile))
     {
         throw ("Project file not found at {0}" -f $proFile)
@@ -240,14 +240,14 @@ try
     }
 
     $releaseDir = Join-Path (Join-Path (Join-Path $SymbianSdkRoot 'epoc32\release') $Arch) $variantDir
-    $exePath = Join-Path $releaseDir 'Podin.exe'
+    $exePath = Join-Path $releaseDir 'BelleApp.exe'
 
     if (-not (Test-Path -LiteralPath $localOutDir))
     {
         New-Item -ItemType Directory -Path $localOutDir -Force | Out-Null
     }
 
-    $artifacts = Get-ChildItem -LiteralPath $releaseDir -Filter 'Podin*' -ErrorAction SilentlyContinue
+    $artifacts = Get-ChildItem -LiteralPath $releaseDir -Filter 'BelleApp*' -ErrorAction SilentlyContinue
     if ($artifacts)
     {
         foreach ($item in $artifacts)
@@ -257,10 +257,10 @@ try
         Write-Info ("Copied {0} artifact(s) into {1}" -f $artifacts.Count, $localOutDir)
     } else
     {
-        Write-Warn ("No Podin* artifacts found under {0} to copy" -f $releaseDir)
+        Write-Warn ("No BelleApp* artifacts found under {0} to copy" -f $releaseDir)
     }
 
-    $localExePath = Join-Path $localOutDir 'Podin.exe'
+    $localExePath = Join-Path $localOutDir 'BelleApp.exe'
     if (Test-Path -LiteralPath $localExePath)
     {
         Write-Info ("Build succeeded. Executable staged at {0}" -f $localExePath)
@@ -269,7 +269,7 @@ try
         Write-Warn ("Executable remained at SDK release path {0}; check copy step" -f $exePath)
     } else
     {
-        Write-Warn ("Build completed but Podin.exe not found under {0}" -f $releaseDir)
+        Write-Warn ("Build completed but BelleApp.exe not found under {0}" -f $releaseDir)
     }
 
     exit 0
@@ -278,3 +278,4 @@ try
     Write-Error $_
     exit 1
 }
+

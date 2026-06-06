@@ -192,7 +192,7 @@ try
     }
     Write-Host "Inspecting: $Dir (Config=$Config, Expect=$expectStr)"
 
-    $exe = Get-ChildItem -Path $Dir -File -Filter *.exe -ErrorAction SilentlyContinue | Where-Object { $_.Name -match 'Podin\.exe' } | Select-Object -First 1
+    $exe = Get-ChildItem -Path $Dir -File -Filter *.exe -ErrorAction SilentlyContinue | Where-Object { $_.Name -match 'BelleApp\.exe' } | Select-Object -First 1
     if (-not $exe)
     { $exe = Get-ChildItem -Path $Dir -File -Filter *.exe -ErrorAction SilentlyContinue | Select-Object -First 1 
     }
@@ -316,3 +316,4 @@ try
     Write-Error $_
     exit 3
 }
+

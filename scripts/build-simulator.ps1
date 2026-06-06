@@ -28,7 +28,7 @@ $root = Resolve-Path (Join-Path $scriptDir '..')
 $buildRoot = Join-Path $root 'build-simulator'
 $cfgLower = $Config.ToLower()
 $buildDir = Join-Path $buildRoot $cfgLower
-$proFile = Join-Path $root 'Podin.pro'
+$proFile = Join-Path $root 'BelleApp.pro'
 
 Write-Info "Root: $root"
 Write-Info "Build: $buildDir"
@@ -80,8 +80,8 @@ try {
     if (-not $UseDepDlls) {
         Write-Info ("Using simulator runtime from {0}; no DLL staging" -f $QtBin)
 
-        $launcher = Join-Path $buildDir 'Podin.run.ps1'
-        $legacyLauncher = Join-Path $buildDir 'Podin.run.cmd'
+        $launcher = Join-Path $buildDir 'BelleApp.run.ps1'
+        $legacyLauncher = Join-Path $buildDir 'BelleApp.run.cmd'
         if (Test-Path $legacyLauncher) {
             Remove-Item -LiteralPath $legacyLauncher -Force
         }
@@ -92,9 +92,9 @@ try {
             'param([Parameter(ValueFromRemainingArguments = $true)][string[]]$ExtraArgs = @())'
             'Set-StrictMode -Version Latest'
             '$ErrorActionPreference = ''Stop'''
-            '$exe = Join-Path $PSScriptRoot ''Podin.exe'''
+            '$exe = Join-Path $PSScriptRoot ''BelleApp.exe'''
             'if (-not (Test-Path -LiteralPath $exe)) {'
-            '    Write-Error "Podin.exe not found next to this launcher."'
+            '    Write-Error "BelleApp.exe not found next to this launcher."'
             '    exit 1'
             '}'
             ('$env:PATH = ''{0};'' + $env:PATH' -f $QtBin)
@@ -153,13 +153,14 @@ try {
         }
     }
 
-    $exe = Join-Path $buildDir 'Podin.exe'
+    $exe = Join-Path $buildDir 'BelleApp.exe'
     if (Test-Path $exe) {
         Write-Info "Build succeeded: $exe"
     } else {
-        Write-Warn ("Build completed but Podin.exe not found in {0}. Check qmake DESTDIR in .pro." -f $buildDir)
+        Write-Warn ("Build completed but BelleApp.exe not found in {0}. Check qmake DESTDIR in .pro." -f $buildDir)
     }
 }
 finally {
     Pop-Location
 }
+

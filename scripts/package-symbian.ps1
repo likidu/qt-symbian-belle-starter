@@ -5,7 +5,7 @@
     pwsh scripts/package-symbian.ps1 -Config Release -Arch armv5
     pwsh scripts/package-symbian.ps1 -Config Debug -Arch armv6 -SymbianSdkRoot "C:\Symbian\QtSDK\Symbian\SDKs\SymbianSR1Qt474"
 .NOTES
-    Expects build-symbian/<arch>-<config> to contain Podin.exe and related artifacts.
+    Expects build-symbian/<arch>-<config> to contain BelleApp.exe and related artifacts.
 #>
 param(
     [ValidateNotNullOrEmpty()][string]$QtSdkRoot = 'C:\Symbian\QtSDK',
@@ -14,7 +14,7 @@ param(
     [ValidateSet('armv5','armv6')][string]$Arch = 'armv5',
     [string]$CertPath,
     [string]$KeyPath,
-    [string]$CertPassword = 'podinpass',
+    [string]$CertPassword = 'belleapppass',
     [string]$PkgTemplatePath,
     [switch]$Force
 )
@@ -30,7 +30,7 @@ try {
     $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
     $repoRoot = (Resolve-Path (Join-Path $scriptDir '..')).Path
     if (-not $PkgTemplatePath) {
-        $PkgTemplatePath = Join-Path $repoRoot 'Podin_template.pkg'
+        $PkgTemplatePath = Join-Path $repoRoot 'BelleApp_template.pkg'
     }
 
     if (-not $SymbianSdkRoot) {
@@ -51,18 +51,18 @@ try {
         throw ("Local build output not found at {0}. Run build-symbian.ps1 first." -f $localOutDir)
     }
 
-    $exePath = Join-Path $localOutDir 'Podin.exe'
+    $exePath = Join-Path $localOutDir 'BelleApp.exe'
     if (-not (Test-Path -LiteralPath $exePath)) {
         throw ("Executable not found at {0}. Build output missing." -f $exePath)
     }
 
     $sdkReleaseDir = Join-Path (Join-Path (Join-Path $SymbianSdkRoot 'epoc32\release') $Arch) $variantDir
-    $sdkResource = Join-Path $SymbianSdkRoot 'epoc32\data\z\resource\apps\Podin.rsc'
-    $sdkReg = Join-Path $SymbianSdkRoot 'epoc32\data\z\private\10003a3f\import\apps\Podin_reg.rsc'
+    $sdkResource = Join-Path $SymbianSdkRoot 'epoc32\data\z\resource\apps\BelleApp.rsc'
+    $sdkReg = Join-Path $SymbianSdkRoot 'epoc32\data\z\private\10003a3f\import\apps\BelleApp_reg.rsc'
 
     # Copy additional artifacts from SDK release if present
     if (Test-Path -LiteralPath $sdkReleaseDir) {
-        $sdkArtifacts = Get-ChildItem -LiteralPath $sdkReleaseDir -Filter 'Podin*' -ErrorAction SilentlyContinue
+        $sdkArtifacts = Get-ChildItem -LiteralPath $sdkReleaseDir -Filter 'BelleApp*' -ErrorAction SilentlyContinue
         if ($sdkArtifacts) {
             foreach ($item in $sdkArtifacts) {
                 Copy-Item -LiteralPath $item.FullName -Destination $localOutDir -Force
@@ -79,15 +79,15 @@ try {
         }
     }
 
-    $localPkg = Join-Path $localOutDir 'Podin_local.pkg'
+    $localPkg = Join-Path $localOutDir 'BelleApp_local.pkg'
     if (-not (Test-Path -LiteralPath $PkgTemplatePath)) {
         throw ("Package template not found at {0}" -f $PkgTemplatePath)
     }
 
     $requiredInputs = @(
-        (Join-Path $localOutDir 'Podin.exe'),
-        (Join-Path $localOutDir 'Podin.rsc'),
-        (Join-Path $localOutDir 'Podin_reg.rsc')
+        (Join-Path $localOutDir 'BelleApp.exe'),
+        (Join-Path $localOutDir 'BelleApp.rsc'),
+        (Join-Path $localOutDir 'BelleApp_reg.rsc')
     )
     $missingInputs = $requiredInputs | Where-Object { -not (Test-Path -LiteralPath $_) }
     if ($missingInputs) {
@@ -101,9 +101,9 @@ try {
     $localForward = ($localOutDir -replace '\\','/').TrimEnd('/')
     $pkgContent = $pkgContent.Replace('$(SDKROOT)', $sdkForward)
 
-    $pkgContent = $pkgContent.Replace("$sdkForward/epoc32/release/$Arch/$variantDir/Podin.exe", "$localForward/Podin.exe")
-    $pkgContent = $pkgContent.Replace("$sdkForward/epoc32/data/z/resource/apps/Podin.rsc", "$localForward/Podin.rsc")
-    $pkgContent = $pkgContent.Replace("$sdkForward/epoc32/data/z/private/10003a3f/import/apps/Podin_reg.rsc", "$localForward/Podin_reg.rsc")
+    $pkgContent = $pkgContent.Replace("$sdkForward/epoc32/release/$Arch/$variantDir/BelleApp.exe", "$localForward/BelleApp.exe")
+    $pkgContent = $pkgContent.Replace("$sdkForward/epoc32/data/z/resource/apps/BelleApp.rsc", "$localForward/BelleApp.rsc")
+    $pkgContent = $pkgContent.Replace("$sdkForward/epoc32/data/z/private/10003a3f/import/apps/BelleApp_reg.rsc", "$localForward/BelleApp_reg.rsc")
 
     Set-Content -LiteralPath $localPkg -Value $pkgContent -Encoding ASCII
 
@@ -112,7 +112,7 @@ try {
         throw ("makesis.exe not found at {0}" -f $makesis)
     }
 
-    $unsignedSis = Join-Path $localOutDir 'Podin_unsigned.sis'
+    $unsignedSis = Join-Path $localOutDir 'BelleApp_unsigned.sis'
     & $makesis $localPkg $unsignedSis
     if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $unsignedSis)) {
         throw "makesis failed with exit code $LASTEXITCODE"
@@ -133,19 +133,19 @@ try {
         if (-not (Test-Path -LiteralPath $certRoot)) {
             New-Item -ItemType Directory -Path $certRoot -Force | Out-Null
         }
-        if (-not $CertPath) { $CertPath = Join-Path $certRoot 'PodinSelfSigned.cer' }
-        if (-not $KeyPath)  { $KeyPath  = Join-Path $certRoot 'PodinSelfSigned.key' }
+        if (-not $CertPath) { $CertPath = Join-Path $certRoot 'BelleAppSelfSigned.cer' }
+        if (-not $KeyPath)  { $KeyPath  = Join-Path $certRoot 'BelleAppSelfSigned.key' }
     }
 
     if ($Force -or -not (Test-Path -LiteralPath $CertPath) -or -not (Test-Path -LiteralPath $KeyPath)) {
         Write-Info ("Generating self-signed certificate at {0}" -f $CertPath)
-        & $makekeys '-cert' '-password' $CertPassword '-len' 2048 '-dname' 'CN=PodinSelfSigned' $KeyPath $CertPath
+        & $makekeys '-cert' '-password' $CertPassword '-len' 2048 '-dname' 'CN=BelleAppSelfSigned' $KeyPath $CertPath
         if ($LASTEXITCODE -ne 0) {
             throw "makekeys failed with exit code $LASTEXITCODE"
         }
     }
 
-    $finalSis = Join-Path $localOutDir 'Podin_selfsigned.sis'
+    $finalSis = Join-Path $localOutDir 'BelleApp_selfsigned.sis'
     & $signsis $unsignedSis $finalSis $CertPath $KeyPath $CertPassword
     if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $finalSis)) {
         throw "signsis failed with exit code $LASTEXITCODE"
@@ -158,3 +158,4 @@ catch {
     Write-Error $_
     exit 1
 }
+
