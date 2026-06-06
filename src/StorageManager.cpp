@@ -5,6 +5,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QStringList>
+#include <QtCore/QVariant>
 #include <QtCore/QDebug>
 #include <QtGui/QDesktopServices>
 #include <QtSql/QSqlDatabase>
