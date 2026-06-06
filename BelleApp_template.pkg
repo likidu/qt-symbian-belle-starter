@@ -1,0 +1,24 @@
+; BelleApp_template.pkg — Symbian self-signed install package template.
+; Tokens $(SDKROOT), $(PLATFORM), $(TARGET) are substituted by package-symbian.ps1.
+
+; Language
+&EN
+
+; Package header: name, UID (must match BelleApp.pro DEPLOYMENT UID base), version
+#{"BelleApp"},(0xE1000001),0,1,0
+
+; Localised vendor name
+%{"BelleApp"}
+; Unique vendor name
+:"BelleApp"
+
+; Supports Series 60 v5.0 / Symbian Belle
+[0x20022E6D],0,0,0,{"Symbian^3ProductID"}
+
+; Qt dependency
+(0x2001E61C),4,7,4,{"Qt"}
+
+; Files
+"$(SDKROOT)/epoc32/release/$(PLATFORM)/$(TARGET)/BelleApp.exe"                          -"!:\sys\bin\BelleApp.exe"
+"$(SDKROOT)/epoc32/data/z/resource/apps/BelleApp.rsc"                                   -"!:\resource\apps\BelleApp.rsc"
+"$(SDKROOT)/epoc32/data/z/private/10003a3f/import/apps/BelleApp_reg.rsc"                -"!:\private\10003a3f\import\apps\BelleApp_reg.rsc"
