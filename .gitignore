@@ -69,3 +69,6 @@ ehthumbs.db
 
 # Ensure dependency blobs are kept in version control
 !deps/**
+
+# Keep the committed SIS package template (build output *_local.pkg stays ignored)
+!*_template.pkg
