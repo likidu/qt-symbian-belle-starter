@@ -38,6 +38,7 @@ $textFiles = Get-ChildItem -Recurse -File |
 
 foreach ($f in $textFiles) {
     $c = Get-Content -Raw -LiteralPath $f.FullName
+    if ($null -eq $c) { continue }   # empty file (e.g. data/.placeholder)
     $orig = $c
     $c = $c.Replace('e1000001', $uidNoPrefix)   # private-dir folder name
     $c = $c.Replace('0xE1000001', $Uid)         # pkg/pro UID literal
