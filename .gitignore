@@ -41,6 +41,10 @@ Makefile.*
 *.rss
 *.loc
 
+# Symbian qmake/raptor build artifacts generated in the repo root
+/bld.inf
+/.make.cache
+
 # Compiled objects and binaries
 *.o
 *.obj

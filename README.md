@@ -27,8 +27,7 @@ before you write any app code.
 ## Build for a device
 
 ```powershell
-pwsh scripts/build-symbian.ps1   -Config Release -Arch armv5
-pwsh scripts/package-symbian.ps1 -Config Release -Arch armv5
+pwsh scripts/build-sis.ps1 -Config Release -Arch armv5 -Clean
 ```
 Produces a self-signed `.sis`. See `docs/SYMBIAN_PACKAGING.md` for install steps,
 and `docs/DEVICE_NOTES.md` for hard-won device gotchas.
@@ -40,6 +39,7 @@ and `docs/DEVICE_NOTES.md` for hard-won device gotchas.
 | `BelleApp.pro` | qmake project |
 | `src/` | C++ managers (Storage, Audio, Memory, Tls) + bootstrap |
 | `qml/` | QML UI: `AppWindow`, `SelfTestPage`, page-stack shell |
+| `lib/qjson/` | vendored JSON parser/serializer for Qt 4 C++ code |
 | `scripts/` | build / package / inspect / init PowerShell scripts |
 | `docs/` | packaging guide, storage schema, device log, plan |
 

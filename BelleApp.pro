@@ -23,6 +23,10 @@ UI_DIR = $$OUT_PWD/ui
 
 INCLUDEPATH += src
 
+# Vendored qjson (Qt 4 has no QJsonDocument); compiled into the app.
+include($$PWD/lib/qjson/qjson.pri)
+DEFINES += QJSON_STATIC
+
 symbian {
     TARGET.EPOCHEAPSIZE = 0x020000 0x2000000
     # Required capabilities for network streaming + local storage

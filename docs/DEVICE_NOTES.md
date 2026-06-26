@@ -36,7 +36,7 @@ Detail page artwork never displays. List page images (loaded directly via QML
    because the source was deleted. Fix: skip the temp file in the cleanup loop.
 
 5. **Raw file paths instead of file:// URLs.**
-   `artworkCached` signal emitted raw paths (`E:/Podin/.../cover.png`) but QML
+   `artworkCached` signal emitted raw paths (`E:/AppName/.../cover.png`) but QML
    `Image.source` requires `file:///` URLs. Needed `QUrl::fromLocalFile()`.
 
 6. **findCachedFile matching .part files.**
